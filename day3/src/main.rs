@@ -93,7 +93,7 @@ fn main() {
             }
         }
     }
-    o2 = isize::from_str_radix(contents_split[indices_o2[0]], 2).unwrap() as i32;
-    co2 = isize::from_str_radix(contents_split[indices_co2[0]], 2).unwrap() as i32;
+    o2 = i32::from_str_radix(contents_split[indices_o2[0]], 2).unwrap();
+    co2 = i32::from_str_radix(contents_split[indices_co2[0]], 2).unwrap();
     println!("{}", o2 * co2);
 }
