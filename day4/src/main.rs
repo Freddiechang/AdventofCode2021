@@ -112,8 +112,8 @@ fn main() {
         y = (y + 1) % 5;
     }
 
-    let result1 = part1(&numbers, &locations, & mut boards);
-    let result2 = part2(&numbers, &locations, & mut boards);
+    let result1 = part1(&numbers, &locations, &mut (boards.clone()));
+    let result2 = part2(&numbers, &locations, &mut (boards.clone()));
     println!("{}", result1);
     println!("{}", result2);
 }
