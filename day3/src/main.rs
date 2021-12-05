@@ -32,9 +32,7 @@ fn main() {
     let mut indices_o2: Vec<usize> = (0..contents_split.len()).collect();
     let mut indices_co2: Vec<usize> = (0..contents_split.len()).collect();
     let mut keep: Vec<bool> = vec![];
-    let mut count1: usize = 0;
-    let mut o2: i32 = 0;
-    let mut co2: i32 = 0;
+    let mut count1: usize;
     for i in 0..digits {
         count1 = 0;
         if indices_o2.len() != 1 {
@@ -93,7 +91,7 @@ fn main() {
             }
         }
     }
-    o2 = i32::from_str_radix(contents_split[indices_o2[0]], 2).unwrap();
-    co2 = i32::from_str_radix(contents_split[indices_co2[0]], 2).unwrap();
+    let o2 = i32::from_str_radix(contents_split[indices_o2[0]], 2).unwrap();
+    let co2 = i32::from_str_radix(contents_split[indices_co2[0]], 2).unwrap();
     println!("{}", o2 * co2);
 }
