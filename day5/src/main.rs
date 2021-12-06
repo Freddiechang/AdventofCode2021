@@ -23,21 +23,7 @@ fn mark_line_part1(p1: Point, p2: Point, map: &mut Vec<Vec<i32>>) {
 }
 
 fn mark_line_part2(p1: Point, p2: Point, map: &mut Vec<Vec<i32>>) {
-    if p1.x == p2.x {
-        let lb = if p1.y > p2.y { p2.y } else { p1.y };
-        let ub = if p1.y > p2.y { p1.y } else { p2.y };
-        for i in lb..=ub {
-            map[i][p1.x] += 1;
-        }
-    }
-    else if p1.y == p2.y {
-        let lb = if p1.x > p2.x { p2.x } else { p1.x };
-        let ub = if p1.x > p2.x { p1.x } else { p2.x };
-        for i in lb..=ub {
-            map[p1.y][i] += 1;
-        }
-    }
-    else {
+    if p1.x != p2.x && p1.y != p2.y {
         let mut x = p1.x as i32;
         let mut y = p1.y as i32;
         let d_x: i32 = if p1.x > p2.x { -1 } else { 1 };
@@ -69,6 +55,13 @@ fn main() {
 
     // part 1 and part 2
     let mut vent_map = vec![vec![0; 1000]; 1000];
+    for line in contents_split.iter() {
+        let points: Vec<&str> = line.split(" -> ").collect();
+        let p1: Vec<usize> = points[0].split(',').map(f).collect();
+        let p2: Vec<usize> = points[1].split(',').map(f).collect();
+        mark_line_part1(Point{x: p1[0], y: p1[1]}, Point{x: p2[0], y: p2[1]}, &mut vent_map);
+    }
+    println!("{}", count_greater_2(&vent_map));
     for line in contents_split.iter() {
         let points: Vec<&str> = line.split(" -> ").collect();
         let p1: Vec<usize> = points[0].split(',').map(f).collect();
