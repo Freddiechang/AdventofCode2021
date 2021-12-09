@@ -23,19 +23,11 @@ fn segment_mapping(wires: Vec<&str>, digits: Vec<&str>) -> i32 {
     let mut counter: Vec<u8> = vec![0; 7];
 
     for i in wires.iter() {
+        let temp: HashSet<char> = i.chars().collect();
         match i.len() {
-            2 => {
-                let temp: HashSet<char> = i.chars().collect();
-                num_to_set.insert(1, temp);
-            },
-            3 => {
-                let temp: HashSet<char> = i.chars().collect();
-                num_to_set.insert(7, temp);
-            },
-            4 => {
-                let temp: HashSet<char> = i.chars().collect();
-                num_to_set.insert(4, temp);
-            },
+            2 => { num_to_set.insert(1, temp); },
+            3 => { num_to_set.insert(7, temp); },
+            4 => { num_to_set.insert(4, temp); },
             _ => {},
         }
         for j in i.chars() {
@@ -43,37 +35,28 @@ fn segment_mapping(wires: Vec<&str>, digits: Vec<&str>) -> i32 {
             counter[index] += 1;
         }
     }
+
     let a = num_to_set.get(&7).unwrap().difference(num_to_set.get(&1).unwrap()).next().unwrap();
     mapping.insert('a', (*a).clone());
     for (i, item) in counter.iter().enumerate() {
+        let c = (i as u8 + 97) as char;
         match item {
-            4 => {
-                let c = (i as u8 + 97) as char;
-                mapping.insert('e', c);
-            },
-            6 => {
-                let c = (i as u8 + 97) as char;
-                mapping.insert('b', c);
-            },
-            9 => {
-                let c = (i as u8 + 97) as char;
-                mapping.insert('f', c);
-            },
-            8 => {
-                let c = (i as u8 + 97) as char;
-                if !c.eq(mapping.get(&'a').unwrap()) { mapping.insert('c', c); }
-            },
+            4 => { mapping.insert('e', c); },
+            6 => { mapping.insert('b', c); },
+            9 => { mapping.insert('f', c); },
+            8 => { if !c.eq(mapping.get(&'a').unwrap()) { mapping.insert('c', c); } },
             7 => {
-                let c = (i as u8 + 97) as char;
                 if num_to_set.get(&4).unwrap().contains(&c) { mapping.insert('d', c); }
                 else { mapping.insert('g', c); }
             },
             _ => {},
         }
     }
+
     let nums_str = vec!["abcefg", "cf", "acdeg", "acdfg", "bcdf",
         "abdfg", "abdefg", "acf", "abcdefg", "abcdfg"];
     let f = |x: char| (*mapping.get(&x).unwrap()).clone();
+    
     for (i, item) in nums_str.iter().enumerate() {
         let temp: HashSet<char> = item.chars().map(f).collect();
         num_to_set.insert(i as i32, temp);
