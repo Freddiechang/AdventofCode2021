@@ -1,14 +1,26 @@
 use std::fs;
 
 fn increment_neighbor(levels: &mut Vec<Vec<i32>>, flash_map: &mut Vec<Vec<bool>>, x: i32, y: i32) {
-    if flash_map[x as usize][y as usize] { return (); }
+    if flash_map[x as usize][y as usize] {
+        return ();
+    }
     flash_map[x as usize][y as usize] = true;
     let x_max = levels.len() - 1;
     let y_max = levels[0].len() - 1;
-    let neighbor: Vec<(i32, i32)> = vec![(x - 1, y - 1), (x, y - 1), (x + 1, y - 1), (x - 1, y),
-        (x + 1, y), (x - 1, y + 1), (x, y + 1), (x + 1, y + 1)];
-    let valid: Vec<&(i32, i32)> = neighbor.iter()
-        .filter(|(i, j)| *i >= 0 && *i <= x_max as i32 && *j >= 0 && *j <= y_max as i32).collect();
+    let neighbor: Vec<(i32, i32)> = vec![
+        (x - 1, y - 1),
+        (x, y - 1),
+        (x + 1, y - 1),
+        (x - 1, y),
+        (x + 1, y),
+        (x - 1, y + 1),
+        (x, y + 1),
+        (x + 1, y + 1),
+    ];
+    let valid: Vec<&(i32, i32)> = neighbor
+        .iter()
+        .filter(|(i, j)| *i >= 0 && *i <= x_max as i32 && *j >= 0 && *j <= y_max as i32)
+        .collect();
     for (i, j) in valid.iter() {
         levels[*i as usize][*j as usize] += 1;
         if levels[*i as usize][*j as usize] > 9 {
@@ -55,18 +67,23 @@ fn part_2(levels: &Vec<Vec<i32>>) -> u32 {
     let mut count: u32 = 0;
     loop {
         count += 1;
-        if next_step(&mut levels) == (levels.len() * levels[0].len()) as i32 { break; }
+        if next_step(&mut levels) == (levels.len() * levels[0].len()) as i32 {
+            break;
+        }
     }
     count
 }
-
 
 fn main() {
     let filename = String::from("input.txt");
     let contents: String = fs::read_to_string(filename).unwrap();
     let content_lines: Vec<&str> = contents.split('\n').collect();
 
-    let f = |x: &str| x.chars().map(|y| y.to_string().parse::<i32>().unwrap()).collect();
+    let f = |x: &str| {
+        x.chars()
+            .map(|y| y.to_string().parse::<i32>().unwrap())
+            .collect()
+    };
     let mut levels: Vec<Vec<i32>> = vec![];
     for i in content_lines.iter() {
         let temp = f(i);

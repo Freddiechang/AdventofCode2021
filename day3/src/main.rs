@@ -10,7 +10,9 @@ fn main() {
     for i in contents_split.iter() {
         let bytes = i.as_bytes();
         for j in 0..i.len() {
-            if bytes[j].eq(&('1' as u8)) { count1[j] += 1; }
+            if bytes[j].eq(&('1' as u8)) {
+                count1[j] += 1;
+            }
         }
     }
     // part 1
@@ -21,8 +23,7 @@ fn main() {
         if count > (total as u32 - count) {
             gamma = (gamma << 1) + 1;
             epsilon = epsilon << 1;
-        }
-        else {
+        } else {
             gamma = gamma << 1;
             epsilon = (epsilon << 1) + 1;
         }
@@ -38,24 +39,30 @@ fn main() {
         if indices_o2.len() != 1 {
             for j_o2 in indices_o2.iter() {
                 let bytes = contents_split[*j_o2].as_bytes();
-                if bytes[i].eq(&('1' as u8)) { count1 += 1; }
+                if bytes[i].eq(&('1' as u8)) {
+                    count1 += 1;
+                }
             }
             if count1 >= indices_o2.len() - count1 {
                 for k in 0..indices_o2.len() {
                     let bytes = contents_split[indices_o2[k]].as_bytes();
-                    if bytes[i].eq(&('1' as u8)) { keep.push(true); }
-                    else { keep.push(false); }
+                    if bytes[i].eq(&('1' as u8)) {
+                        keep.push(true);
+                    } else {
+                        keep.push(false);
+                    }
                 }
                 let mut keep_iter = keep.iter();
                 indices_o2.retain(|_| *keep_iter.next().unwrap());
                 keep.clear();
-            }
-            else
-            {
+            } else {
                 for k in 0..indices_o2.len() {
                     let bytes = contents_split[indices_o2[k]].as_bytes();
-                    if bytes[i].eq(&('0' as u8)) { keep.push(true); }
-                    else { keep.push(false); }
+                    if bytes[i].eq(&('0' as u8)) {
+                        keep.push(true);
+                    } else {
+                        keep.push(false);
+                    }
                 }
                 let mut keep_iter = keep.iter();
                 indices_o2.retain(|_| *keep_iter.next().unwrap());
@@ -66,24 +73,30 @@ fn main() {
         if indices_co2.len() != 1 {
             for j_co2 in indices_co2.iter() {
                 let bytes = contents_split[*j_co2].as_bytes();
-                if bytes[i].eq(&('1' as u8)) { count1 += 1; }
+                if bytes[i].eq(&('1' as u8)) {
+                    count1 += 1;
+                }
             }
             if count1 < indices_co2.len() - count1 {
                 for k in 0..indices_co2.len() {
                     let bytes = contents_split[indices_co2[k]].as_bytes();
-                    if bytes[i].eq(&('1' as u8)) { keep.push(true); }
-                    else { keep.push(false); }
+                    if bytes[i].eq(&('1' as u8)) {
+                        keep.push(true);
+                    } else {
+                        keep.push(false);
+                    }
                 }
                 let mut keep_iter = keep.iter();
                 indices_co2.retain(|_| *keep_iter.next().unwrap());
                 keep.clear();
-            }
-            else
-            {
+            } else {
                 for k in 0..indices_co2.len() {
                     let bytes = contents_split[indices_co2[k]].as_bytes();
-                    if bytes[i].eq(&('0' as u8)) { keep.push(true); }
-                    else { keep.push(false); }
+                    if bytes[i].eq(&('0' as u8)) {
+                        keep.push(true);
+                    } else {
+                        keep.push(false);
+                    }
                 }
                 let mut keep_iter = keep.iter();
                 indices_co2.retain(|_| *keep_iter.next().unwrap());

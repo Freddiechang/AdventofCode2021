@@ -1,5 +1,5 @@
-use std::fs;
 use std::collections::{HashMap, HashSet};
+use std::fs;
 
 fn part_1(contents_split: &Vec<&str>) -> i32 {
     let mut count: i32 = 0;
@@ -8,7 +8,7 @@ fn part_1(contents_split: &Vec<&str>) -> i32 {
         let digits: Vec<&str> = parts[1].strip_prefix(' ').unwrap().split(' ').collect();
         for j in digits.iter() {
             match j.len() {
-               2 | 3 | 4 | 7 => { count += 1 }, 
+                2 | 3 | 4 | 7 => count += 1,
                 _ => {}
             }
         }
@@ -25,10 +25,16 @@ fn segment_mapping(wires: Vec<&str>, digits: Vec<&str>) -> i32 {
     for i in wires.iter() {
         let temp: HashSet<char> = i.chars().collect();
         match i.len() {
-            2 => { num_to_set.insert(1, temp); },
-            3 => { num_to_set.insert(7, temp); },
-            4 => { num_to_set.insert(4, temp); },
-            _ => {},
+            2 => {
+                num_to_set.insert(1, temp);
+            }
+            3 => {
+                num_to_set.insert(7, temp);
+            }
+            4 => {
+                num_to_set.insert(4, temp);
+            }
+            _ => {}
         }
         for j in i.chars() {
             let index = j as usize - 97;
@@ -36,27 +42,46 @@ fn segment_mapping(wires: Vec<&str>, digits: Vec<&str>) -> i32 {
         }
     }
 
-    let a = num_to_set.get(&7).unwrap().difference(num_to_set.get(&1).unwrap()).next().unwrap();
+    let a = num_to_set
+        .get(&7)
+        .unwrap()
+        .difference(num_to_set.get(&1).unwrap())
+        .next()
+        .unwrap();
     mapping.insert('a', (*a).clone());
     for (i, item) in counter.iter().enumerate() {
         let c = (i as u8 + 97) as char;
         match item {
-            4 => { mapping.insert('e', c); },
-            6 => { mapping.insert('b', c); },
-            9 => { mapping.insert('f', c); },
-            8 => { if !c.eq(mapping.get(&'a').unwrap()) { mapping.insert('c', c); } },
+            4 => {
+                mapping.insert('e', c);
+            }
+            6 => {
+                mapping.insert('b', c);
+            }
+            9 => {
+                mapping.insert('f', c);
+            }
+            8 => {
+                if !c.eq(mapping.get(&'a').unwrap()) {
+                    mapping.insert('c', c);
+                }
+            }
             7 => {
-                if num_to_set.get(&4).unwrap().contains(&c) { mapping.insert('d', c); }
-                else { mapping.insert('g', c); }
-            },
-            _ => {},
+                if num_to_set.get(&4).unwrap().contains(&c) {
+                    mapping.insert('d', c);
+                } else {
+                    mapping.insert('g', c);
+                }
+            }
+            _ => {}
         }
     }
 
-    let nums_str = vec!["abcefg", "cf", "acdeg", "acdfg", "bcdf",
-        "abdfg", "abdefg", "acf", "abcdefg", "abcdfg"];
+    let nums_str = vec![
+        "abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg",
+    ];
     let f = |x: char| (*mapping.get(&x).unwrap()).clone();
-    
+
     for (i, item) in nums_str.iter().enumerate() {
         let temp: HashSet<char> = item.chars().map(f).collect();
         num_to_set.insert(i as i32, temp);
@@ -83,8 +108,6 @@ fn part_2(contents_split: &Vec<&str>) -> i32 {
     }
     sum
 }
-
-
 
 fn main() {
     let filename = String::from("input.txt");

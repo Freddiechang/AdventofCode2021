@@ -9,7 +9,9 @@ fn main() {
     let mut count: usize = 0;
     let mut last: i32 = i32::max_value();
     for i in nums.iter() {
-        if  *i > last { count += 1; }
+        if *i > last {
+            count += 1;
+        }
         last = *i;
     }
     println!("{}", count);
@@ -17,10 +19,10 @@ fn main() {
     let mut count: usize = 0;
     let mut last: i32 = i32::max_value();
     for i in 0..=(nums.len() - 3) {
-        let num = nums[i] + 
-            nums[i + 1] +
-            nums[i + 2];
-        if  num > last { count += 1; }
+        let num = nums[i] + nums[i + 1] + nums[i + 2];
+        if num > last {
+            count += 1;
+        }
         last = num;
     }
     println!("{}", count);

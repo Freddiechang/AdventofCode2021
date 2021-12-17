@@ -1,9 +1,9 @@
+use std::collections::HashSet;
 use std::fs;
-use std::collections::{HashSet};
 
 #[derive(Hash)]
-struct Point (i32, i32);
-struct Fold (u8, i32);
+struct Point(i32, i32);
+struct Fold(u8, i32);
 
 impl PartialEq for Point {
     fn eq(&self, other: &Self) -> bool {
@@ -15,8 +15,11 @@ impl Eq for Point {}
 
 fn fold(points: &Vec<Point>, fold: &Fold) -> Vec<Point> {
     let f = |x: &Point| {
-        if fold.0 == 0 { Point(fold.1 - (x.0 - fold.1).signum() * (x.0 - fold.1), x.1) }
-        else { Point(x.0, fold.1 - (x.1 - fold.1).signum() * (x.1 - fold.1)) }
+        if fold.0 == 0 {
+            Point(fold.1 - (x.0 - fold.1).signum() * (x.0 - fold.1), x.1)
+        } else {
+            Point(x.0, fold.1 - (x.1 - fold.1).signum() * (x.1 - fold.1))
+        }
     };
     let result: HashSet<Point> = points.iter().map(f).collect();
     result.into_iter().collect()
@@ -35,7 +38,6 @@ fn display_paper(points: &Vec<Point>, x_max: usize, y_max: usize) {
     }
 }
 
-
 fn main() {
     let filename = String::from("input.txt");
     let contents: String = fs::read_to_string(filename).unwrap();
@@ -46,20 +48,18 @@ fn main() {
     let mut folds: Vec<Fold> = vec![];
     let mut change = false;
     for i in content_lines.iter() {
-        if i.eq(&"") { 
+        if i.eq(&"") {
             change = true;
             continue;
         }
         if !change {
-            let coors:Vec<i32> = i.split(',').map(f).collect();
+            let coors: Vec<i32> = i.split(',').map(f).collect();
             points.push(Point(coors[0], coors[1]));
-        }
-        else {
+        } else {
             let fold: Vec<&str> = i.split(' ').skip(2).next().unwrap().split('=').collect();
             if fold[0].eq("x") {
                 folds.push(Fold(0, f(fold[1])));
-            }
-            else {
+            } else {
                 folds.push(Fold(1, f(fold[1])));
             }
         }
@@ -70,7 +70,11 @@ fn main() {
         result1.clear();
         result1.extend(temp);
     }
-    let x_max = result1.iter().fold(0, |acc, x| if acc > x.0 { acc } else { x.0 } );
-    let y_max = result1.iter().fold(0, |acc, x| if acc > x.1 { acc } else { x.1 } );
+    let x_max = result1
+        .iter()
+        .fold(0, |acc, x| if acc > x.0 { acc } else { x.0 });
+    let y_max = result1
+        .iter()
+        .fold(0, |acc, x| if acc > x.1 { acc } else { x.1 });
     display_paper(&result1, (x_max + 1) as usize, (y_max + 1) as usize);
 }
