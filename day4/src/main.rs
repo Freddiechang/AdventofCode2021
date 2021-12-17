@@ -1,5 +1,5 @@
-use std::fs;
 use std::collections::{HashMap, HashSet};
+use std::fs;
 
 struct Position {
     b: usize,
@@ -7,7 +7,11 @@ struct Position {
     y: usize,
 }
 
-fn part1(numbers: &Vec<i32>, locations: &HashMap<i32, Vec<Position>>, boards: &mut Vec<Vec<Vec<i32>>>) -> i32 {
+fn part1(
+    numbers: &Vec<i32>,
+    locations: &HashMap<i32, Vec<Position>>,
+    boards: &mut Vec<Vec<Vec<i32>>>,
+) -> i32 {
     let mut status: Vec<Vec<i32>> = vec![vec![0; 10]; boards.len()];
     let mut board_win: i32 = -1;
     let mut current_num = -1;
@@ -18,15 +22,21 @@ fn part1(numbers: &Vec<i32>, locations: &HashMap<i32, Vec<Position>>, boards: &m
             Some(x) => {
                 for j in x.iter() {
                     status[j.b][j.x] += 1;
-                    if status[j.b][j.x] == 5 { board_win = j.b as i32; }
+                    if status[j.b][j.x] == 5 {
+                        board_win = j.b as i32;
+                    }
                     status[j.b][j.y + 5] += 1;
-                    if status[j.b][j.y + 5] == 5 { board_win = j.b as i32; }
+                    if status[j.b][j.y + 5] == 5 {
+                        board_win = j.b as i32;
+                    }
                     boards[j.b][j.y][j.x] = -1;
                 }
-            },
+            }
             None => (),
         }
-        if board_win != -1 { break; }
+        if board_win != -1 {
+            break;
+        }
     }
     let mut sum: i32 = 0;
     if board_win != -1 {
@@ -41,8 +51,11 @@ fn part1(numbers: &Vec<i32>, locations: &HashMap<i32, Vec<Position>>, boards: &m
     return sum * current_num;
 }
 
-
-fn part2(numbers: &Vec<i32>, locations: &HashMap<i32, Vec<Position>>, boards: &mut Vec<Vec<Vec<i32>>>) -> i32 {
+fn part2(
+    numbers: &Vec<i32>,
+    locations: &HashMap<i32, Vec<Position>>,
+    boards: &mut Vec<Vec<Vec<i32>>>,
+) -> i32 {
     let mut status: Vec<Vec<i32>> = vec![vec![0; 10]; boards.len()];
     let mut board_win_set: HashSet<usize> = HashSet::new();
     let mut current_num = -1;
@@ -79,13 +92,12 @@ fn part2(numbers: &Vec<i32>, locations: &HashMap<i32, Vec<Position>>, boards: &m
                     }
                     boards[j.b][j.y][j.x] = -1;
                 }
-            },
+            }
             None => (),
         }
     }
     return sum * current_num;
 }
-
 
 fn main() {
     let filename = String::from("input.txt");
@@ -98,14 +110,22 @@ fn main() {
     let mut boards: Vec<Vec<Vec<i32>>> = vec![vec![vec![0; 5]; 5]; (contents_split.len() - 2) / 6];
     let mut y: usize = 0;
     for (i, item) in contents_split[2..].iter().enumerate() {
-        if i % 6 == 5 { continue; }
+        if i % 6 == 5 {
+            continue;
+        }
         let nums_line: Vec<i32> = item.split_ascii_whitespace().map(f).collect();
         for (k, num) in nums_line.iter().enumerate() {
-            let temp_pos = Position {b: i / 6, x: k, y: y};
+            let temp_pos = Position {
+                b: i / 6,
+                x: k,
+                y: y,
+            };
             boards[i / 6][y][k] = *num;
             let location = locations.get_mut(num);
             match location {
-                None => { locations.insert(*num, vec![temp_pos]); },
+                None => {
+                    locations.insert(*num, vec![temp_pos]);
+                }
                 Some(t) => t.push(temp_pos),
             }
         }

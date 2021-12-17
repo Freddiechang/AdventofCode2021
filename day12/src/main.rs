@@ -1,5 +1,5 @@
+use std::collections::{HashMap, HashSet};
 use std::fs;
-use std::collections::{HashSet, HashMap};
 
 fn extract_nodes<'a>(lines: &Vec<&'a str>) -> HashSet<&'a str> {
     let mut nodes: HashSet<&str> = HashSet::new();
@@ -9,9 +9,12 @@ fn extract_nodes<'a>(lines: &Vec<&'a str>) -> HashSet<&'a str> {
     nodes
 }
 
-fn build_graph<'a>(nodes: &HashSet<&'a str>, lines: &Vec<&str>) -> (Vec<Vec<bool>>, HashMap<&'a str, usize>) {
+fn build_graph<'a>(
+    nodes: &HashSet<&'a str>,
+    lines: &Vec<&str>,
+) -> (Vec<Vec<bool>>, HashMap<&'a str, usize>) {
     let mut graph: Vec<Vec<bool>> = vec![vec![false; nodes.len()]; nodes.len()];
-    let mut node_names: HashMap<&str, usize>  = HashMap::new();
+    let mut node_names: HashMap<&str, usize> = HashMap::new();
     for (i, item) in nodes.iter().enumerate() {
         node_names.insert(item, i as usize);
     }
@@ -26,16 +29,25 @@ fn build_graph<'a>(nodes: &HashSet<&'a str>, lines: &Vec<&str>) -> (Vec<Vec<bool
 }
 
 fn bfs(
-    graph: &Vec<Vec<bool>>, visited: &mut Vec<bool>, current_node: usize, end: usize, big_caves: &HashSet<usize>
+    graph: &Vec<Vec<bool>>,
+    visited: &mut Vec<bool>,
+    current_node: usize,
+    end: usize,
+    big_caves: &HashSet<usize>,
 ) -> i32 {
-
-    if current_node == end { return 1; }
+    if current_node == end {
+        return 1;
+    }
     if !big_caves.contains(&current_node) {
-        if visited[current_node] { return 0; }
-        else { visited[current_node] = true; }
+        if visited[current_node] {
+            return 0;
+        } else {
+            visited[current_node] = true;
+        }
     }
     let next_nodes: Vec<usize> = (0..graph.len())
-        .filter(|x| graph[current_node][*x]).collect();
+        .filter(|x| graph[current_node][*x])
+        .collect();
     let mut sum: i32 = 0;
     for i in next_nodes.iter() {
         sum += bfs(graph, &mut visited.clone(), *i, end, big_caves);
@@ -57,29 +69,41 @@ fn part_1(graph: &Vec<Vec<bool>>, node_names: &HashMap<&str, usize>) -> i32 {
 }
 
 fn bfs2(
-    graph: &Vec<Vec<bool>>, visited: &mut Vec<bool>, current_node: usize,
-    start: usize, end: usize, big_caves: &HashSet<usize>, twice: bool
+    graph: &Vec<Vec<bool>>,
+    visited: &mut Vec<bool>,
+    current_node: usize,
+    start: usize,
+    end: usize,
+    big_caves: &HashSet<usize>,
+    twice: bool,
 ) -> i32 {
-
-    if current_node == end { return 1; }
-    if current_node == start && visited[start] { return 0; }
+    if current_node == end {
+        return 1;
+    }
+    if current_node == start && visited[start] {
+        return 0;
+    }
     let mut flag = twice;
     if !big_caves.contains(&current_node) {
         if visited[current_node] {
-            if flag { return 0; }
-            else { flag = true; }
+            if flag {
+                return 0;
+            } else {
+                flag = true;
+            }
+        } else {
+            visited[current_node] = true;
         }
-        else { visited[current_node] = true; }
     }
     let next_nodes: Vec<usize> = (0..graph.len())
-        .filter(|x| graph[current_node][*x]).collect();
+        .filter(|x| graph[current_node][*x])
+        .collect();
     let mut sum: i32 = 0;
     for i in next_nodes.iter() {
         sum += bfs2(graph, &mut visited.clone(), *i, start, end, big_caves, flag);
     }
     sum
 }
-
 
 fn part_2(graph: &Vec<Vec<bool>>, node_names: &HashMap<&str, usize>) -> i32 {
     let start: usize = *node_names.get("start").unwrap();
@@ -94,13 +118,11 @@ fn part_2(graph: &Vec<Vec<bool>>, node_names: &HashMap<&str, usize>) -> i32 {
     return sum;
 }
 
-
-
 fn main() {
     let filename = String::from("input.txt");
     let contents: String = fs::read_to_string(filename).unwrap();
     let content_lines: Vec<&str> = contents.split('\n').collect();
-    
+
     let nodes = extract_nodes(&content_lines);
     let (graph, node_names) = build_graph(&nodes, &content_lines);
     println!("{}", part_1(&graph, &node_names));

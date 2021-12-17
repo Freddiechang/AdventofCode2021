@@ -13,11 +13,9 @@ fn main() {
         let n = f(tokens[1]);
         if tokens[0].eq("forward") {
             h += n;
-        }
-        else if tokens[0].eq("down") {
+        } else if tokens[0].eq("down") {
             d += n;
-        }
-        else {
+        } else {
             d -= n;
         }
     }
@@ -32,12 +30,9 @@ fn main() {
         if tokens[0].eq("forward") {
             h += n;
             d += aim * n;
-
-        }
-        else if tokens[0].eq("down") {
+        } else if tokens[0].eq("down") {
             aim += n;
-        }
-        else {
+        } else {
             aim -= n;
         }
     }
